@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { listDocs, readDoc } from "@/lib/docs";
 
 const titles: Record<string, string> = {
@@ -18,6 +19,7 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
   const { slug } = await params;
   const page = slug?.[0] ?? "index";
   const pages = await listDocs();
+  if (!pages.includes(page)) notFound();
   const markdown = await readDoc(page);
   const html = marked.parse(markdown, { async: false }) as string;
 

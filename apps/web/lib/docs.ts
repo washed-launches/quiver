@@ -28,5 +28,9 @@ export async function listDocs() {
 
 export async function readDoc(slug: string) {
   const safe = slug.replace(/[^a-z0-9-]/g, "") || "index";
+  const pages = await listDocs();
+  if (!pages.includes(safe)) {
+    throw new Error("DOC_NOT_FOUND");
+  }
   return readFile(path.join(await docsRoot(), `${safe}.md`), "utf8");
 }

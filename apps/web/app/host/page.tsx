@@ -17,9 +17,6 @@ export default async function HostPage() {
       <h1 className="mt-3 break-words font-display text-4xl text-forest sm:text-5xl">{site.name}</h1>
       <p className="mt-2 font-ui text-sm text-mist">${site.symbol}</p>
       <p className="mt-4 max-w-xl text-lg text-ink/75">{site.description}</p>
-      <p className="mt-4 max-w-xl text-sm text-bark">
-        Preview page. Not a live market. Create your own if you want a real curve.
-      </p>
       <div className="mt-10 max-w-md">
         <TradePanel site={site} />
       </div>

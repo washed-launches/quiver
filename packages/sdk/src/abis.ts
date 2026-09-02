@@ -111,6 +111,32 @@ export const registryAbi = [
     inputs: [],
     outputs: [{ type: "uint256" }],
   },
+  {
+    type: "function",
+    name: "tokens",
+    stateMutability: "view",
+    inputs: [{ name: "index", type: "uint256" }],
+    outputs: [{ type: "address" }],
+  },
+  {
+    type: "function",
+    name: "getSite",
+    stateMutability: "view",
+    inputs: [{ name: "token", type: "address" }],
+    outputs: [
+      {
+        name: "site",
+        type: "tuple",
+        components: [
+          { name: "token", type: "address" },
+          { name: "curve", type: "address" },
+          { name: "creator", type: "address" },
+          { name: "hostnameHash", type: "bytes32" },
+          { name: "slug", type: "string" },
+        ],
+      },
+    ],
+  },
 ] as const;
 
 export const curveAbi = [

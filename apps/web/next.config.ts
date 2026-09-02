@@ -5,9 +5,13 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  outputFileTracingIncludes: {
+    "/docs/[[...slug]]": ["../../docs/**/*"],
+  },
   async rewrites() {
-    const dest = process.env.API_UPSTREAM ?? "http://127.0.0.1:4001";
-    return [{ source: "/api/:path*", destination: `${dest}/:path*` }];
+    const dest = process.env.API_UPSTREAM ?? "";
+    if (!dest || dest.includes("127.0.0.1") || dest.includes("localhost")) return [];
+    return [{ source: "/api/:path*", destination: `${dest.replace(/\/$/, "")}/:path*` }];
   },
 };
 

@@ -14,10 +14,6 @@ export function SiteView({ site }: { site: SiteRecord }) {
         <p className="mt-4 max-w-xl text-lg text-ink/75">
           {site.description || "Buy and sell against the curve."}
         </p>
-        <p className="mt-5 max-w-xl text-[15px] leading-7 text-bark">
-          This page is a preview of what a Quiver site looks like. It is not a real market. If you want
-          a curve, create your own at /launch — don’t treat {url} as something to trade.
-        </p>
       </div>
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
         <TradeChart trades={site.trades ?? []} symbol={site.symbol} />

@@ -31,6 +31,19 @@ const pixel = Pixelify_Sans({
 export const metadata: Metadata = {
   title: "QUIVER — own your curve",
   description: "Your token, your site, one bonding curve. Monthly fee. No cut on trades.",
+  metadataBase: new URL("https://quiver.diy"),
+  openGraph: {
+    title: "QUIVER — own your curve",
+    description: "Your token, your site, one bonding curve. Monthly fee. No cut on trades.",
+    url: "https://quiver.diy",
+    siteName: "QUIVER",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "QUIVER — own your curve",
+    description: "Your token, your site, one bonding curve. Monthly fee. No cut on trades.",
+  },
 };
 
 export const viewport = {

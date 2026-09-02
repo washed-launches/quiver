@@ -9,6 +9,7 @@ import { waitForTransactionReceipt } from "wagmi/actions";
 import { addresses, isDeployed } from "@/lib/addresses";
 import { saveSite } from "@/lib/api";
 import { publicUrl, reservedSlugs } from "@/lib/site";
+import { friendlyError } from "@/lib/wallet-error";
 import { WalletButton } from "@/components/wallet-button";
 import { wagmiConfig } from "@/lib/wagmi";
 
@@ -54,7 +55,7 @@ export default function LaunchPage() {
       await refetch();
       setStep(2);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Subscribe failed");
+      setError(friendlyError(err));
     }
   }
 
@@ -99,18 +100,22 @@ export default function LaunchPage() {
           // ignore unrelated logs
         }
       }
-      await saveSite({
-        slug: clean,
-        token,
-        curve,
-        creator: address,
-        name,
-        symbol: symbol.toUpperCase(),
-        description,
-      });
+      try {
+        await saveSite({
+          slug: clean,
+          token,
+          curve,
+          creator: address,
+          name,
+          symbol: symbol.toUpperCase(),
+          description,
+        });
+      } catch {
+        // On-chain registry is enough to render the page.
+      }
       router.push(`/${clean}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Deploy failed");
+      setError(friendlyError(err));
     }
   }
 
@@ -149,17 +154,31 @@ export default function LaunchPage() {
             {[
               { id: 0, label: "Monthly", price: "0.05 ETH", detail: "30 days" },
               { id: 1, label: "Yearly", price: "0.45 ETH", detail: "365 days" },
-            ].map((plan) => (
-              <button
-                key={plan.id}
-                onClick={() => setPlanId(plan.id)}
-                className={`frame p-5 text-left ${planId === plan.id ? "border-forest bg-cream" : ""}`}
-              >
-                <div className="font-ui text-[11px] uppercase tracking-[0.14em] text-mist">{plan.label}</div>
-                <div className="mt-2 font-display text-2xl text-forest">{plan.price}</div>
-                <div className="mt-1 text-sm text-mist">{plan.detail}</div>
-              </button>
-            ))}
+            ].map((plan) => {
+              const selected = planId === plan.id;
+              return (
+                <button
+                  key={plan.id}
+                  type="button"
+                  onClick={() => setPlanId(plan.id)}
+                  aria-pressed={selected}
+                  className={`frame relative p-5 text-left ${
+                    selected
+                      ? "border-forest bg-[#eef3ea] shadow-[inset_0_0_0_2px_#1b2c21]"
+                      : "opacity-75 hover:opacity-100"
+                  }`}
+                >
+                  {selected && (
+                    <span className="absolute right-3 top-3 font-ui text-[10px] uppercase tracking-[0.14em] text-moss">
+                      Selected
+                    </span>
+                  )}
+                  <div className="font-ui text-[11px] uppercase tracking-[0.14em] text-mist">{plan.label}</div>
+                  <div className="mt-2 font-display text-2xl text-forest">{plan.price}</div>
+                  <div className="mt-1 text-sm text-mist">{plan.detail}</div>
+                </button>
+              );
+            })}
           </div>
           {active && <p className="mt-4 text-sm text-moss">Subscription already active.</p>}
           <button className="btn-primary mt-8 w-full sm:w-auto" onClick={active ? () => setStep(2) : subscribe} disabled={isPending}>
@@ -197,9 +216,7 @@ export default function LaunchPage() {
         <div className="mt-10">
           <h2 className="font-display text-2xl text-forest">Go live</h2>
           <p className="mt-3 text-lg text-ink/75">
-            {name} (${symbol.toUpperCase()}) will show up at {publicUrl(slug)}. Right now that’s a preview
-            page — not a live market. Make your own if you want one. Don’t treat other people’s slugs as
-            real.
+            {name} (${symbol.toUpperCase()}) will go live at {publicUrl(slug)}.
           </p>
           <button className="btn-primary mt-8 w-full sm:w-auto" onClick={deploy} disabled={isPending}>
             {isPending ? "Deploying…" : "Deploy"}

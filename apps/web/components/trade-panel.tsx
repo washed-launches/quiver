@@ -5,8 +5,8 @@ import { useState } from "react";
 import { formatEther, parseEther } from "viem";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
-import { apiUrl } from "@/lib/addresses";
 import type { SiteRecord } from "@/lib/api";
+import { friendlyError } from "@/lib/wallet-error";
 import { contractsLive } from "@/lib/site";
 import { WalletButton } from "./wallet-button";
 import { wagmiConfig } from "@/lib/wagmi";
@@ -64,7 +64,7 @@ export function TradePanel({ site }: { site: SiteRecord }) {
         });
       }
       await waitForTransactionReceipt(wagmiConfig, { hash });
-      await fetch(`${apiUrl}/index/trade`, {
+      await fetch("/api/index/trade", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -78,7 +78,7 @@ export function TradePanel({ site }: { site: SiteRecord }) {
       });
       setStatus("Filled.");
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : "Trade failed");
+      setStatus(friendlyError(err));
     }
   }
 
