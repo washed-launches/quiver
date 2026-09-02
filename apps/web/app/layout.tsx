@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Newsreader, Source_Serif_4, IBM_Plex_Sans, Pixelify_Sans } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
-import { PreviewBanner } from "@/components/preview-banner";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -45,7 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${display.variable} ${body.variable} ${ui.variable} ${pixel.variable} font-body antialiased`}>
         <Providers>
-          <PreviewBanner />
           <Nav />
           <main>{children}</main>
           <Footer />
