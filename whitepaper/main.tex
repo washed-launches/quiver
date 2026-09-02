@@ -1,0 +1,160 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  citecolor=black
+}
+
+\onehalfspacing
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+\title{\textbf{QUIVER}\\[0.4em]
+\large White-label forever curves, priced as software}
+\author{QUIVER}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Launchpads sell a social moat and charge a take-rate on every trade. The bonding curve underneath is a commodity. QUIVER inverts the pricing. A creator who already has distribution rents the tooling for a subscription in ETH, receives one forever curve on their own site and domain, and pays zero protocol basis points on volume. Subscription ETH is spent buying \$QUIVER on PONS, the launchpad venue where the protocol token itself was issued. This paper states the thesis, specifies the curve and the subscription--buyback path, and explains why the product has been missing.
+\end{abstract}
+
+\tableofcontents
+\vspace{1em}
+
+\section{The pricing flip}
+
+A launchpad is not a curve. A launchpad is credibility, visibility, support, and a network that shows up on day one. That moat is the product. The constant-product (or virtual-reserve) book used to discover a price is interchangeable.
+
+Creators with distribution nonetheless launch on someone else's platform. They pay a percentage of every trade for a moat they brought themselves, and they wear the platform's brand while they do it.
+
+QUIVER is the opposite object. Three clicks produce a site, a domain, and one curve for one token. There is no launchpad attached. There is no cut on trading volume. The creator pays for software. The protocol's native token captures that software revenue through buybacks, not through a tax on the creator's market.
+
+\section{Market structure}
+
+Existing ``white-label'' kits are launchpads with a skin. PotLaunch, ScriptPump, and Dynamic Bonding Curve partner programs still take one to five percent of volume and still present a factory feed. Open-source curve templates exist; they require self-hosting, fee wiring, and a UI that still looks like a casino of new pairs.
+
+Volume take-rate is a better business if you own discovery. It scales with other people's success, it needs no sales motion once the feed is habitual, and it punishes the exact users who generate the most activity. Subscription SaaS for token tooling has the opposite shape: you only win accounts that already have an audience, you cannot grow through a ``new pairs'' slot machine, and you must operate custom domains. The TAM is smaller. The product is cleaner for the people it is for.
+
+That is why the packaged form---three clicks, your domain, one forever curve, subscription only---has not been the default. QUIVER occupies that gap on Robinhood Chain.
+
+\section{Protocol design}
+
+QUIVER is a small set of contracts plus a multi-tenant site renderer.
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item \texttt{QuiverSubscription} accepts ETH for a monthly or yearly plan and extends an expiry.
+  \item \texttt{QuiverFactory} will deploy a \texttt{SiteToken} and \texttt{BondingCurve} only if the caller is subscribed.
+  \item \texttt{SiteRegistry} binds a human slug (and later a hostname) to that pair.
+  \item Traders buy and sell on the creator's URL. Protocol fee is hardcoded to zero.
+  \item \texttt{QuiverBuyback} spends subscription ETH on \$QUIVER via PONS and sends tokens to \texttt{QuiverTreasury}.
+\end{enumerate}
+
+Creator tokens never touch PONS. Only \$QUIVER does.
+
+Default knobs, owner-settable: $0.05$ ETH per $30$ days, $0.45$ ETH per $365$ days. Default token supply is $10^9$ units at $18$ decimals. Default phantom quote is $1$ ETH.
+
+\section{Forever-curve specification}
+
+Let $P$ be the immutable phantom quote, $R$ the real ETH reserve, $T$ the token reserve, and $V = P + R$ the virtual quote. The invariant is
+\begin{equation}
+  V \cdot T = k.
+\end{equation}
+The book opens at $R = 0$, $T = S$ (total supply), so the opening price is $P/S > 0$.
+
+A buy of $q$ ETH returns
+\begin{equation}
+  \Delta T = \frac{T \cdot q}{V + q},
+\end{equation}
+then $R \leftarrow R + q$ and $T \leftarrow T - \Delta T$.
+
+A sell of $t$ tokens returns
+\begin{equation}
+  \Delta R = \frac{V \cdot t}{T + t},
+\end{equation}
+subject to $\Delta R \le R$. Integer division truncates toward zero, matching the Solidity implementation.
+
+There is no protocol fee term. There is no graduation threshold. The curve does not close. A creator who later wants Uniswap liquidity does so outside QUIVER.
+
+\texttt{SiteToken} is a minimal ERC-20. The entire supply is minted to the curve. There is no owner, mint, pause, or blacklist.
+
+\section{Subscription and PONS buybacks}
+
+\texttt{subscribe(planId)} requires \texttt{msg.value} equal to the plan price. Expiry is computed from $\max(\mathrm{now}, \mathrm{expiresAt}[msg.sender])$ plus duration. The payment is forwarded, in the same transaction, to \texttt{QuiverBuyback.onPayment}.
+
+The buyback reads PONS v2 factory
+\[
+\texttt{0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e}
+\]
+for the \$QUIVER launch record. If the launch is still on its curve, the contract calls \texttt{buy} and delivers tokens to the treasury. If the token address is unset, the factory is unreadable, or the launch has graduated to Uniswap v4, ETH is held and a \texttt{Held} event is emitted. Anyone may later call \texttt{executeHeld()}.
+
+v1 does not implement a Uniswap v4 unlock-callback swap. After graduation, held ETH waits for that path. The meme hook on graduated PONS pools is
+\[
+\texttt{0xE5e702641Ea86F4ae6cC3cDaeD2B886f976Be044}.
+\]
+
+\texttt{QuiverTreasury} holds bought \$QUIVER. There are no silent withdrawals in v1.
+
+\section{\$QUIVER as a PONS-launched protocol token}
+
+The protocol token is not issued on a QUIVER forever curve. It is launched on PONS. That is the ironic alignment, not a contradiction.
+
+PONS supplies the social moat the protocol token needs once: a feed, a watching network, a place people already trade. QUIVER's customers are people who do not need that moat for their own token. We rented distribution. They rent software.
+
+The site at \texttt{/quiver} does not simulate a QUIVER curve. It sends traders to PONS.
+
+\section{Robinhood Chain}
+
+QUIVER targets Robinhood Chain, an Arbitrum Orbit L2. Chain id $4663$ (testnet $46630$). Gas is ETH. Explorer is Blockscout. Standard EVM tooling works unmodified.
+
+We inherit the chain's assumptions: a centralized sequencer, fast soft confirmations that are not Ethereum settlement, and Uniswap plus PONS as the current venue set. Deployments should hit testnet first and verify source on Blockscout.
+
+\section{Risks}
+
+\paragraph{No discovery feed.}
+QUIVER will not make an unknown token famous. Creators without distribution are on the wrong product.
+
+\paragraph{PONS venue dependency.}
+Buybacks require PONS to remain a live market for \$QUIVER. A pause, a factory rotation, or a graduation without a wired v4 path leaves ETH held.
+
+\paragraph{Centralized sequencer.}
+Robinhood Chain currently sequences centrally. Reordering and downtime risk sit outside QUIVER.
+
+\paragraph{Custom-domain operations.}
+CNAME verification and host routing are v1. Wildcard TLS and a full edge control plane are not. Misconfigured DNS can strand a brand URL.
+
+\paragraph{Smart-contract risk.}
+Curves, subscriptions, and buybacks are unaudited in this publication. Fixed supply and a zero protocol fee reduce some surfaces; they do not remove them.
+
+\paragraph{Rounding and donations.}
+Integer division favors the curve by a wei. Direct token transfers into a curve change reserves only when they pass through \texttt{buy}/\texttt{sell}; stray ETH is rejected.
+
+\section{Roadmap}
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item Testnet deploy, Blockscout verification, first paid subscriptions.
+  \item \$QUIVER launch on PONS; set the token address on buyback and treasury.
+  \item Uniswap v4 buy path for post-graduation fills.
+  \item Production CNAME edge and TLS.
+  \item Optional creator fee on their own curve, still zero protocol bps.
+\end{enumerate}
+
+\section{Conclusion}
+
+The curve is cheap. The storefront is expensive. Launchpads price the storefront as a tax on volume. QUIVER prices the tooling as a subscription and leaves the storefront---the site, the domain, the forever book---with the creator. \$QUIVER is the claim on that software revenue, bought on the one launchpad we were willing to use.
+
+\end{document}

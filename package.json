@@ -1,0 +1,14 @@
+{
+  "name": "quiver",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @quiver/web --filter @quiver/api dev",
+    "dev:web": "pnpm --filter @quiver/web dev",
+    "dev:api": "pnpm --filter @quiver/api dev",
+    "build": "pnpm --filter @quiver/sdk build && pnpm --filter @quiver/api build && pnpm --filter @quiver/web build",
+    "test:contracts": "forge test --root contracts -vv",
+    "whitepaper": "pdflatex -interaction=nonstopmode -output-directory whitepaper whitepaper/main.tex && pdflatex -interaction=nonstopmode -output-directory whitepaper whitepaper/main.tex && Copy-Item whitepaper/main.pdf apps/web/public/quiver.pdf -Force",
+    "start:railway": "node scripts/start-railway.mjs"
+  }
+}
