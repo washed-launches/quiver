@@ -49,9 +49,17 @@ export function WalletButton() {
     );
   }
 
+  const short = address ? `${address.slice(0, 6)}…${address.slice(-4)}` : "";
+
   return (
-    <button className="btn-secondary whitespace-nowrap px-3" onClick={() => disconnect()}>
-      {address?.slice(0, 6)}…{address?.slice(-4)}
+    <button
+      type="button"
+      className="btn-secondary whitespace-nowrap px-3"
+      onClick={() => disconnect()}
+      title="Disconnect wallet"
+      aria-label={`Disconnect wallet ${short}`}
+    >
+      Disconnect {short}
     </button>
   );
 }
