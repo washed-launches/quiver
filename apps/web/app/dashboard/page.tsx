@@ -37,15 +37,16 @@ export default function DashboardPage() {
 
   async function onSave(site: SiteRecord) {
     await saveSite(site);
-    setMessage("Branding saved.");
+    setMessage("Saved.");
   }
 
   if (!isConnected) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 pixel-panel p-8 mt-10">
-        <h1 className="font-pixel text-2xl text-forest">Your site</h1>
-        <p className="mt-3">Connect to manage branding and custom domains.</p>
-        <div className="mt-4">
+      <div className="mx-auto max-w-[560px] px-5 py-20">
+        <p className="eyebrow">Dashboard</p>
+        <h1 className="mt-3 font-display text-4xl text-forest">Your site</h1>
+        <p className="mt-4 text-lg text-ink/70">Connect the wallet that launched the site.</p>
+        <div className="mt-6">
           <WalletButton />
         </div>
       </div>
@@ -53,40 +54,44 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="font-pixel text-3xl text-forest">Dashboard</h1>
-      <div className="pixel-panel mt-6 p-5">
-        <p className="font-pixel text-[10px] text-moss">Subscription</p>
-        <p className="mt-2">
+    <div className="mx-auto max-w-[720px] px-5 py-16">
+      <p className="eyebrow">Dashboard</p>
+      <h1 className="mt-3 font-display text-4xl text-forest">Your sites</h1>
+
+      <section className="mt-10 border-t border-rule pt-8">
+        <p className="label">Subscription</p>
+        <p className="mt-1 text-ink/80">
           {expires && expires > 0n
             ? `Active until ${new Date(Number(expires) * 1000).toLocaleString()}`
-            : "No on-chain subscription detected in this environment."}
+            : "No subscription on this wallet yet."}
         </p>
-        <Link href="/launch" className="pixel-btn-sun mt-4 inline-block">
+        <Link href="/launch" className="btn-primary mt-5 inline-flex">
           Extend / launch
         </Link>
-      </div>
+      </section>
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-12 space-y-8">
         {sites.length === 0 && (
-          <p className="pixel-panel p-5">No sites yet. Launch one in three clicks.</p>
+          <p className="border-t border-rule pt-8 text-ink/60">No sites yet.</p>
         )}
         {sites.map((site) => (
-          <article key={site.slug} className="pixel-panel p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="font-pixel text-sm">
-                {site.name} <span className="text-mist">/{site.slug}</span>
+          <article key={site.slug} className="border-t border-rule pt-8">
+            <div className="flex items-baseline justify-between gap-4">
+              <h2 className="font-display text-2xl text-forest">
+                {site.name}{" "}
+                <span className="font-ui text-sm tracking-wide text-mist">/{site.slug}</span>
               </h2>
-              <Link href={`/s/${site.slug}`} className="underline">
+              <Link href={`/s/${site.slug}`} className="font-ui text-[12px] text-moss hover:underline">
                 Open
               </Link>
             </div>
             <textarea
+              className="mt-4"
               defaultValue={site.description}
               onBlur={(e) => onSave({ ...site, description: e.target.value })}
               rows={3}
             />
-            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]">
               <input
                 placeholder="trade.yoursite.com"
                 defaultValue={site.hostname}
@@ -95,18 +100,17 @@ export default function DashboardPage() {
                   setHost(e.target.value);
                 }}
               />
-              <button className="pixel-btn" onClick={onVerify}>
+              <button className="btn-secondary" onClick={onVerify}>
                 Verify CNAME
               </button>
             </div>
-            <p className="text-sm text-mist">
-              Point a CNAME to <code>sites.quiver.app</code>. Status:{" "}
-              {site.hostnameVerified ? "verified" : "waiting"}
+            <p className="mt-3 font-ui text-[12px] text-mist">
+              CNAME → sites.quiver.app · {site.hostnameVerified ? "verified" : "waiting"}
             </p>
           </article>
         ))}
       </div>
-      {message && <p className="mt-4 text-moss">{message}</p>}
+      {message && <p className="mt-6 text-sm text-moss">{message}</p>}
     </div>
   );
 }

@@ -12,15 +12,12 @@ export default async function HostPage() {
   if (!site) notFound();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <div className="pixel-panel p-6">
-        <p className="font-pixel text-[10px] text-moss">{host}</p>
-        <h1 className="mt-2 font-pixel text-3xl text-forest">
-          {site.name} <span className="text-mist">${site.symbol}</span>
-        </h1>
-        <p className="mt-3">{site.description}</p>
-      </div>
-      <div className="mt-6">
+    <div className="mx-auto max-w-page px-5 py-14">
+      <p className="eyebrow">{host}</p>
+      <h1 className="mt-3 font-display text-5xl text-forest">{site.name}</h1>
+      <p className="mt-2 font-ui text-sm text-mist">${site.symbol}</p>
+      <p className="mt-4 max-w-xl text-lg text-ink/75">{site.description}</p>
+      <div className="mt-10 max-w-md">
         <TradePanel site={site} />
       </div>
     </div>

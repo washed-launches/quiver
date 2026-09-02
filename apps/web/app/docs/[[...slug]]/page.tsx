@@ -22,15 +22,15 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
   const html = marked.parse(markdown, { async: false }) as string;
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-[220px_1fr]">
-      <aside className="pixel-panel h-fit p-4">
-        <p className="font-pixel text-[10px] text-moss">Docs</p>
-        <ul className="mt-3 space-y-2">
+    <div className="mx-auto grid max-w-page gap-12 px-5 py-14 md:grid-cols-[200px_1fr]">
+      <aside className="h-fit md:sticky md:top-24">
+        <p className="eyebrow mb-4">Docs</p>
+        <ul className="space-y-2.5">
           {pages.map((p) => (
             <li key={p}>
               <Link
                 href={p === "index" ? "/docs" : `/docs/${p}`}
-                className={`font-pixel text-[11px] ${p === page ? "text-moss" : "text-forest"}`}
+                className={`font-ui text-[13px] ${p === page ? "text-forest" : "text-mist hover:text-forest"}`}
               >
                 {titles[p] ?? p}
               </Link>
@@ -38,7 +38,7 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
           ))}
         </ul>
       </aside>
-      <article className="docs-prose pixel-panel p-8" dangerouslySetInnerHTML={{ __html: html }} />
+      <article className="docs-prose max-w-[680px]" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }

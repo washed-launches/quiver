@@ -12,6 +12,7 @@ import { WalletButton } from "@/components/wallet-button";
 import { wagmiConfig } from "@/lib/wagmi";
 
 const PLAN_PRICE = [parseEther("0.05"), parseEther("0.45")] as const;
+const STEPS = ["Subscribe", "Name it", "Deploy"] as const;
 
 export default function LaunchPage() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function LaunchPage() {
   async function subscribe() {
     setError("");
     if (!isDeployed(addresses.subscription)) {
-      setError("Contracts are not deployed in this environment yet. You can still preview the flow.");
+      setError("Contracts are not deployed here yet. You can still preview the flow.");
       setStep(2);
       return;
     }
@@ -109,34 +110,37 @@ export default function LaunchPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <p className="font-pixel text-[10px] text-moss">Three clicks</p>
-      <h1 className="mt-2 font-pixel text-3xl text-forest">Launch your site</h1>
-      <div className="mt-6 flex gap-2 font-pixel text-[10px]">
-        {[1, 2, 3].map((n) => (
-          <span
-            key={n}
-            className={`px-3 py-1 pixel-border ${step === n ? "bg-sun" : "bg-parchment"}`}
-          >
-            {n === 1 ? "Subscribe" : n === 2 ? "Name it" : "Deploy"}
-          </span>
-        ))}
-      </div>
+    <div className="mx-auto max-w-[640px] px-5 py-16">
+      <p className="eyebrow">About five minutes</p>
+      <h1 className="mt-3 font-display text-4xl text-forest">Put a curve on a page</h1>
+      <ol className="mt-8 flex gap-6 border-b border-rule pb-4">
+        {STEPS.map((label, i) => {
+          const n = i + 1;
+          return (
+            <li
+              key={label}
+              className={`font-ui text-[12px] tracking-[0.08em] ${n === step ? "text-forest" : "text-mist"}`}
+            >
+              <span className="text-sun">{String(n).padStart(2, "0")}</span> {label}
+            </li>
+          );
+        })}
+      </ol>
 
       {!isConnected && (
-        <div className="pixel-panel mt-8 p-6">
-          <p className="font-body">Connect a wallet on Robinhood Chain to begin.</p>
-          <div className="mt-4">
+        <div className="mt-10">
+          <p className="font-body text-lg text-ink/80">Need a wallet on Robinhood Chain first.</p>
+          <div className="mt-5">
             <WalletButton />
           </div>
         </div>
       )}
 
       {isConnected && step === 1 && (
-        <div className="pixel-panel mt-8 p-6">
-          <h2 className="font-pixel text-sm">1. Pay for the tooling</h2>
-          <p className="mt-3">ETH goes to the buyback. Nothing is taken from later trades.</p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-10">
+          <h2 className="font-display text-2xl text-forest">Pick a plan</h2>
+          <p className="mt-2 text-ink/70">This is the only thing you pay us. Trades don’t get a fee on top.</p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               { id: 0, label: "Monthly", price: "0.05 ETH", detail: "30 days" },
               { id: 1, label: "Yearly", price: "0.45 ETH", detail: "365 days" },
@@ -144,59 +148,60 @@ export default function LaunchPage() {
               <button
                 key={plan.id}
                 onClick={() => setPlanId(plan.id)}
-                className={`p-4 text-left pixel-border ${planId === plan.id ? "bg-sun" : "bg-parchment"}`}
+                className={`frame p-5 text-left ${planId === plan.id ? "border-forest bg-cream" : ""}`}
               >
-                <div className="font-pixel text-xs">{plan.label}</div>
-                <div className="mt-2 font-body text-xl">{plan.price}</div>
-                <div className="text-sm text-mist">{plan.detail}</div>
+                <div className="font-ui text-[11px] uppercase tracking-[0.14em] text-mist">{plan.label}</div>
+                <div className="mt-2 font-display text-2xl text-forest">{plan.price}</div>
+                <div className="mt-1 text-sm text-mist">{plan.detail}</div>
               </button>
             ))}
           </div>
-          {active && <p className="mt-4 text-moss">You already have a live subscription.</p>}
-          <button className="pixel-btn-sun mt-6" onClick={active ? () => setStep(2) : subscribe} disabled={isPending}>
+          {active && <p className="mt-4 text-sm text-moss">Subscription already active.</p>}
+          <button className="btn-primary mt-8" onClick={active ? () => setStep(2) : subscribe} disabled={isPending}>
             {active ? "Continue" : isPending ? "Confirm in wallet" : "Subscribe"}
           </button>
         </div>
       )}
 
       {isConnected && step === 2 && (
-        <div className="pixel-panel mt-8 space-y-4 p-6">
-          <h2 className="font-pixel text-sm">2. Name the token</h2>
+        <div className="mt-10 space-y-5">
+          <h2 className="font-display text-2xl text-forest">Name and slug</h2>
           <label className="block">
-            <span className="font-pixel text-[10px]">Name</span>
+            <span className="label">Name</span>
             <input value={name} onChange={(e) => setName(e.target.value)} maxLength={32} placeholder="Moss" />
           </label>
           <label className="block">
-            <span className="font-pixel text-[10px]">Ticker</span>
+            <span className="label">Ticker</span>
             <input value={symbol} onChange={(e) => setSymbol(e.target.value)} maxLength={12} placeholder="MOSS" />
           </label>
           <label className="block">
-            <span className="font-pixel text-[10px]">Slug</span>
+            <span className="label">Slug</span>
             <input value={slug} onChange={(e) => setSlug(e.target.value)} maxLength={32} placeholder="moss" />
           </label>
           <label className="block">
-            <span className="font-pixel text-[10px]">About</span>
+            <span className="label">About</span>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} />
           </label>
-          <button className="pixel-btn-sun" onClick={() => setStep(3)} disabled={!name || !symbol || !slug}>
+          <button className="btn-primary" onClick={() => setStep(3)} disabled={!name || !symbol || !slug}>
             Next
           </button>
         </div>
       )}
 
       {isConnected && step === 3 && (
-        <div className="pixel-panel mt-8 p-6">
-          <h2 className="font-pixel text-sm">3. Deploy the curve</h2>
-          <p className="mt-3">
-            {name} ({symbol.toUpperCase()}) goes live at /s/{slug.toLowerCase()}. Protocol fee stays 0.
+        <div className="mt-10">
+          <h2 className="font-display text-2xl text-forest">Go live</h2>
+          <p className="mt-3 text-lg text-ink/75">
+            {name} (${symbol.toUpperCase()}) will be at /s/{slug.toLowerCase()}. Buy and sell sit on that
+            page. We don’t take a cut.
           </p>
-          <button className="pixel-btn-sun mt-6" onClick={deploy} disabled={isPending}>
-            {isPending ? "Deploying..." : "Deploy"}
+          <button className="btn-primary mt-8" onClick={deploy} disabled={isPending}>
+            {isPending ? "Deploying…" : "Deploy"}
           </button>
         </div>
       )}
 
-      {error && <p className="mt-4 text-bark">{error}</p>}
+      {error && <p className="mt-6 text-sm text-bark">{error}</p>}
     </div>
   );
 }

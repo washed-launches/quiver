@@ -5,24 +5,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: "#f4efd8",
-        parchment: "#e8dfc0",
-        forest: "#1c3324",
-        moss: "#2d5a3d",
+        cream: "#f4efe0",
+        paper: "#fbf7ec",
+        forest: "#1b2c21",
+        moss: "#3a5f45",
         leaf: "#5eae62",
-        sun: "#e6c84a",
-        bark: "#5a3d2b",
+        sun: "#c4a227",
+        bark: "#6a4a32",
         stream: "#4d8eb5",
-        ink: "#172117",
-        mist: "#6a7a62",
+        ink: "#1c1a14",
+        mist: "#6b6556",
+        rule: "#d8d0b8",
       },
       fontFamily: {
-        pixel: ["var(--font-pixel)", "monospace"],
+        display: ["var(--font-display)", "Georgia", "serif"],
         body: ["var(--font-body)", "Georgia", "serif"],
+        ui: ["var(--font-ui)", "ui-sans-serif", "system-ui", "sans-serif"],
+        pixel: ["var(--font-pixel)", "monospace"],
       },
-      boxShadow: {
-        pixel: "4px 4px 0 0 #1c3324",
-        "pixel-sun": "4px 4px 0 0 #e6c84a",
+      maxWidth: {
+        page: "1080px",
       },
     },
   },

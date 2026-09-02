@@ -11,26 +11,22 @@ export function WalletButton() {
 
   if (!isConnected) {
     return (
-      <button
-        className="pixel-btn-sun"
-        onClick={() => connect({ connector: connectors[0] })}
-        disabled={isPending}
-      >
-        {isPending ? "Opening..." : "Connect"}
+      <button className="btn-primary" onClick={() => connect({ connector: connectors[0] })} disabled={isPending}>
+        {isPending ? "Opening…" : "Connect"}
       </button>
     );
   }
 
   if (chainId !== robinhoodChain.id) {
     return (
-      <button className="pixel-btn-sun" onClick={() => switchChain({ chainId: robinhoodChain.id })}>
-        Switch to Robinhood
+      <button className="btn-primary" onClick={() => switchChain({ chainId: robinhoodChain.id })}>
+        Switch network
       </button>
     );
   }
 
   return (
-    <button className="pixel-btn" onClick={() => disconnect()}>
+    <button className="btn-secondary" onClick={() => disconnect()}>
       {address?.slice(0, 6)}…{address?.slice(-4)}
     </button>
   );

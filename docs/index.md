@@ -1,22 +1,15 @@
-# What QUIVER is
+# What Quiver is
 
-QUIVER is white-label market infrastructure for a single token.
+A page and a bonding curve for one token. People buy and sell on your URL. We charge a subscription. We don’t take a cut of trades.
 
-You get a site, a domain, and one forever bonding curve. Traders buy and sell on *your* URL. QUIVER does not take a cut of that volume. You pay a subscription in ETH for the tooling. That ETH buys `$QUIVER`.
+That’s it. Not a launchpad. There’s no feed of other coins, and the curve doesn’t “graduate” anywhere.
 
-QUIVER is not a launchpad. There is no discovery feed, no neighboring tickers, no “graduating” into someone else’s pool as the product. The site is the market.
+$QUIVER, the token we use for buybacks, is on [PONS](/docs/pons). Different thing.
 
-## What it is not
+## How you launch
 
-- Not a casino homepage of new pairs.
-- Not a Pump-style factory that lives on our brand.
-- Not a volume-tax protocol wearing a SaaS costume.
-- Not the venue for `$QUIVER` itself. The protocol token launched on [PONS](/docs/pons).
+1. Connect a Robinhood Chain wallet and pay the month or the year.
+2. Name, ticker, slug.
+3. Deploy. It’s live at `/s/your-slug`. You can hang a domain on it later.
 
-## Three clicks
-
-1. Connect a wallet on Robinhood Chain and subscribe.
-2. Name the token and pick a slug.
-3. Deploy. The curve is live on `/s/your-slug`, and later on your own domain.
-
-See the [creator guide](/docs/creator-guide).
+[Creator guide](/docs/creator-guide) if you want the boring details.

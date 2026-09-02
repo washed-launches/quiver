@@ -3,84 +3,112 @@
 @tailwind utilities;
 
 :root {
-  --cream: #f4efd8;
-  --forest: #1c3324;
-  --sun: #e6c84a;
+  --cream: #f4efe0;
+  --paper: #fbf7ec;
+  --rule: #d8d0b8;
+  --forest: #1b2c21;
+  --moss: #3a5f45;
+  --sun: #c4a227;
+  --ink: #1c1a14;
+  --mist: #6b6556;
 }
 
 html,
 body {
-  background: var(--cream);
-  color: #172117;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 body {
-  background-image:
-    linear-gradient(180deg, rgba(244, 239, 216, 0.55), rgba(244, 239, 216, 0.92)),
-    url("/art/canopy.png");
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center top;
   min-height: 100vh;
 }
 
-.pixel-border {
-  border: 3px solid #1c3324;
-  box-shadow: 4px 4px 0 0 #1c3324;
+::selection {
+  background: #e6d58a;
+  color: var(--forest);
 }
 
-.pixel-btn {
-  @apply font-pixel text-[11px] tracking-wide uppercase px-4 py-3 bg-moss text-cream pixel-border transition-transform;
+.rule {
+  height: 1px;
+  background: var(--rule);
 }
 
-.pixel-btn:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 0 #1c3324;
+.frame {
+  border: 1px solid #cfc6ae;
+  background: var(--cream);
 }
 
-.pixel-btn-sun {
-  @apply pixel-btn bg-sun text-forest;
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2.5 text-[13px] tracking-[0.04em] transition-colors;
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
 }
 
-.pixel-panel {
-  @apply bg-cream/90 pixel-border;
+.btn-primary {
+  @apply btn bg-forest text-paper hover:bg-moss;
+}
+
+.btn-secondary {
+  @apply btn border border-[var(--forest)] text-forest hover:bg-cream;
+}
+
+.btn-ghost {
+  @apply btn text-mist hover:text-forest;
+}
+
+.label {
+  @apply block text-[11px] uppercase tracking-[0.16em] text-mist mb-1.5;
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+}
+
+.eyebrow {
+  @apply text-[11px] uppercase tracking-[0.18em] text-moss;
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+}
+
+input,
+textarea {
+  @apply w-full bg-paper border border-[var(--rule)] px-3 py-2.5 text-[15px] outline-none;
+  font-family: var(--font-body), Georgia, serif;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--forest);
 }
 
 .docs-prose h1 {
-  @apply font-pixel text-2xl text-forest mb-4;
+  @apply font-display text-3xl text-forest mb-4;
 }
 .docs-prose h2 {
-  @apply font-pixel text-lg text-forest mt-8 mb-3;
+  @apply font-display text-xl text-forest mt-10 mb-3;
 }
 .docs-prose h3 {
-  @apply font-pixel text-sm text-moss mt-6 mb-2;
+  @apply font-ui text-sm tracking-wide text-moss mt-8 mb-2 uppercase;
 }
 .docs-prose p,
 .docs-prose li {
-  @apply font-body text-[17px] leading-7 text-ink/90 mb-3;
+  @apply font-body text-[17px] leading-8 text-ink/90 mb-3;
 }
 .docs-prose ul {
   @apply list-disc pl-6 mb-4;
 }
 .docs-prose a {
-  @apply text-moss underline decoration-sun underline-offset-4;
+  @apply text-moss underline decoration-[var(--sun)] underline-offset-4;
 }
 .docs-prose code {
-  @apply bg-parchment px-1 py-0.5 text-sm;
+  @apply bg-cream px-1 py-0.5 text-[13px];
+  font-family: var(--font-ui), ui-monospace, monospace;
 }
 .docs-prose pre {
-  @apply bg-forest text-cream p-4 overflow-x-auto mb-4 pixel-border;
+  @apply bg-forest text-paper p-4 overflow-x-auto mb-4;
 }
 .docs-prose pre code {
-  @apply bg-transparent text-cream p-0;
+  @apply bg-transparent text-paper p-0;
 }
-
-input,
-textarea {
-  @apply w-full bg-parchment/80 border-[3px] border-forest px-3 py-2 font-body outline-none;
+.docs-prose table {
+  @apply w-full text-sm mb-6;
 }
-
-input:focus,
-textarea:focus {
-  box-shadow: 3px 3px 0 0 #e6c84a;
+.docs-prose th,
+.docs-prose td {
+  @apply border-b border-[var(--rule)] py-2 text-left;
 }

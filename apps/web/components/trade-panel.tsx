@@ -82,32 +82,32 @@ export function TradePanel({ site }: { site: SiteRecord }) {
   }
 
   return (
-    <section className="pixel-panel p-5">
+    <section className="frame p-6">
       <div className="flex gap-2">
-        <button className={side === "buy" ? "pixel-btn-sun" : "pixel-btn"} onClick={() => setSide("buy")}>
+        <button className={side === "buy" ? "btn-primary" : "btn-secondary"} onClick={() => setSide("buy")}>
           Buy
         </button>
-        <button className={side === "sell" ? "pixel-btn-sun" : "pixel-btn"} onClick={() => setSide("sell")}>
+        <button className={side === "sell" ? "btn-primary" : "btn-secondary"} onClick={() => setSide("sell")}>
           Sell
         </button>
       </div>
-      <p className="mt-3 font-pixel text-[10px] text-moss">
-        Protocol fee {fee === undefined ? "0 (on-chain once deployed)" : `${fee} bps`}
+      <p className="mt-4 font-ui text-[11px] uppercase tracking-[0.14em] text-mist">
+        Protocol fee {fee === undefined ? "0 bps" : `${fee} bps`}
       </p>
-      <label className="mt-4 block">
-        <span className="font-pixel text-[10px]">{side === "buy" ? "ETH in" : "Tokens in"}</span>
+      <label className="mt-5 block">
+        <span className="label">{side === "buy" ? "ETH in" : "Tokens in"}</span>
         <input value={amount} onChange={(e) => setAmount(e.target.value)} />
       </label>
       <p className="mt-3 text-sm text-mist">
-        Est. out: {quote !== undefined ? formatEther(quote) : "—"} {side === "buy" ? site.symbol : "ETH"}
+        Est. out {quote !== undefined ? formatEther(quote) : "—"} {side === "buy" ? site.symbol : "ETH"}
       </p>
       {!isConnected ? (
-        <div className="mt-4">
+        <div className="mt-6">
           <WalletButton />
         </div>
       ) : (
-        <button className="pixel-btn-sun mt-4 w-full" onClick={trade} disabled={isPending}>
-          {isPending ? "Confirm..." : side === "buy" ? `Buy ${site.symbol}` : `Sell ${site.symbol}`}
+        <button className="btn-primary mt-6 w-full" onClick={trade} disabled={isPending}>
+          {isPending ? "Confirm…" : side === "buy" ? `Buy ${site.symbol}` : `Sell ${site.symbol}`}
         </button>
       )}
       {status && <p className="mt-3 text-sm">{status}</p>}

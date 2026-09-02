@@ -1,32 +1,27 @@
 import { ponsTradeUrl } from "@quiver/sdk";
-import { addresses } from "@/lib/addresses";
-import { ponsApp } from "@/lib/addresses";
+import { CurveGraphic } from "@/components/curve-graphic";
+import { addresses, ponsApp } from "@/lib/addresses";
 
 export default function QuiverTokenPage() {
   const url = ponsTradeUrl(addresses.quiverToken);
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <div className="overflow-hidden pixel-panel">
-        <img src="/art/canopy.png" alt="Pixel trees" className="h-56 w-full object-cover" />
-        <div className="p-8">
-          <p className="font-pixel text-[10px] text-moss">Protocol token · launched on PONS</p>
-          <h1 className="mt-2 font-pixel text-4xl text-forest">$QUIVER</h1>
-          <p className="mt-4 font-body text-lg leading-8">
-            We did not put the protocol token on our own forever curve. We launched it on PONS, the
-            social moat on Robinhood Chain. Subscription ETH from QUIVER sites buys $QUIVER on that
-            venue — curve first, Uniswap v4 after graduation — and sits in the protocol treasury.
-          </p>
-          <p className="mt-4 font-body text-lg leading-8">
-            That is the product in one line: we rented distribution once. You rent software, not a
-            storefront.
-          </p>
-          <a href={url} className="pixel-btn-sun mt-6 inline-block" target="_blank" rel="noreferrer">
-            Trade on PONS
-          </a>
-          <p className="mt-4 text-sm text-mist">
-            Opens {ponsApp}. There is no QUIVER bonding curve on this site.
-          </p>
-        </div>
+    <div className="mx-auto grid max-w-page items-start gap-12 px-5 py-16 lg:grid-cols-[0.42fr_1fr]">
+      <CurveGraphic tall caption="$QUIVER trades on PONS, not here" />
+      <div className="max-w-xl lg:pt-2">
+        <p className="eyebrow">On PONS</p>
+        <h1 className="mt-4 font-display text-5xl text-forest">$QUIVER</h1>
+        <p className="mt-6 font-body text-[18px] leading-8 text-ink/80">
+          The token isn’t on a Quiver curve. It’s a PONS launch. Sub payments buy it there and the
+          tokens sit in the treasury.
+        </p>
+        <p className="mt-4 font-body text-[18px] leading-8 text-ink/80">
+          Yeah, we used a launchpad. That’s kind of the point — we needed their crowd. If you already
+          have one, skip that.
+        </p>
+        <a href={url} className="btn-primary mt-8" target="_blank" rel="noreferrer">
+          Trade on PONS
+        </a>
+        <p className="mt-4 font-ui text-[12px] text-mist">Sends you to {ponsApp}.</p>
       </div>
     </div>
   );
