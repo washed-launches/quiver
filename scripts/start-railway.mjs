@@ -19,7 +19,7 @@ const api = spawn("pnpm", ["--filter", "@quiver/api", "start"], {
   },
 });
 
-const web = spawn("pnpm", ["--filter", "@quiver/web", "start", "--", "--port", process.env.PORT ?? "3000"], {
+const web = spawn("pnpm", ["--filter", "@quiver/web", "start"], {
   stdio: "inherit",
   shell: true,
   env: {
