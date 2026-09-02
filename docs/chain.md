@@ -1,8 +1,8 @@
 # Robinhood Chain
 
-QUIVER ships on Robinhood Chain, an Arbitrum Orbit L2. Gas is ETH. There is no chain token.
+QUIVER ships on Robinhood Chain **mainnet** (4663), an Arbitrum Orbit L2. Gas is ETH. There is no chain token.
 
-| | Mainnet | Testnet |
+| | Mainnet (live) | Testnet |
 | --- | --- | --- |
 | Chain id | 4663 | 46630 |
 | RPC | `https://rpc.mainnet.chain.robinhood.com` | `https://rpc.testnet.chain.robinhood.com` |

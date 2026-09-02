@@ -22,10 +22,10 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
   const html = marked.parse(markdown, { async: false }) as string;
 
   return (
-    <div className="mx-auto grid max-w-page gap-12 px-5 py-14 md:grid-cols-[200px_1fr]">
-      <aside className="h-fit md:sticky md:top-24">
+    <div className="mx-auto grid max-w-page gap-10 px-4 py-10 sm:px-5 sm:py-14 md:grid-cols-[200px_1fr]">
+      <aside className="h-fit border-b border-rule pb-5 md:sticky md:top-24 md:border-0 md:pb-0">
         <p className="eyebrow mb-4">Docs</p>
-        <ul className="space-y-2.5">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2 md:block md:space-y-2.5 md:gap-0">
           {pages.map((p) => (
             <li key={p}>
               <Link

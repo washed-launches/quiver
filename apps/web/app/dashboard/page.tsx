@@ -42,9 +42,9 @@ export default function DashboardPage() {
 
   if (!isConnected) {
     return (
-      <div className="mx-auto max-w-[560px] px-5 py-20">
+      <div className="mx-auto max-w-[560px] px-4 py-12 sm:px-5 sm:py-20">
         <p className="eyebrow">Dashboard</p>
-        <h1 className="mt-3 font-display text-4xl text-forest">Your site</h1>
+        <h1 className="mt-3 font-display text-[32px] text-forest sm:text-4xl">Your site</h1>
         <p className="mt-4 text-lg text-ink/70">Connect the wallet that launched the site.</p>
         <div className="mt-6">
           <WalletButton />
@@ -54,9 +54,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[720px] px-5 py-16">
+    <div className="mx-auto max-w-[720px] px-4 py-10 sm:px-5 sm:py-16">
       <p className="eyebrow">Dashboard</p>
-      <h1 className="mt-3 font-display text-4xl text-forest">Your sites</h1>
+      <h1 className="mt-3 font-display text-[32px] text-forest sm:text-4xl">Your sites</h1>
 
       <section className="mt-10 border-t border-rule pt-8">
         <p className="label">Subscription</p>
@@ -76,12 +76,12 @@ export default function DashboardPage() {
         )}
         {sites.map((site) => (
           <article key={site.slug} className="border-t border-rule pt-8">
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="font-display text-2xl text-forest">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 className="min-w-0 break-words font-display text-2xl text-forest">
                 {site.name}{" "}
                 <span className="font-ui text-sm tracking-wide text-mist">/{site.slug}</span>
               </h2>
-              <Link href={`/s/${site.slug}`} className="font-ui text-[12px] text-moss hover:underline">
+              <Link href={`/${site.slug}`} className="shrink-0 font-ui text-[12px] text-moss hover:underline">
                 Open
               </Link>
             </div>

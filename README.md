@@ -25,11 +25,21 @@ API: http://localhost:4001/health
 
 ## Contracts
 
+Robinhood Chain **mainnet**, chain id `4663`.
+
 ```bash
 cd contracts
 forge test -vv
-forge script script/Deploy.s.sol:Deploy --rpc-url $RH_TESTNET_RPC_URL --broadcast
 ```
+
+Deploy (do not paste the key into chat):
+
+```powershell
+$env:PRIVATE_KEY="0x..."
+node scripts/deploy-robinhood.mjs
+```
+
+The script checks you are on mainnet, deploys the five contracts, writes `contracts/deployments/robinhood.json`, and fills `NEXT_PUBLIC_*` in the web env files. Fund the deployer with a little ETH on Robinhood mainnet first (~0.01 ETH is enough).
 
 ## Whitepaper
 

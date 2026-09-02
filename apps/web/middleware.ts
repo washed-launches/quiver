@@ -7,6 +7,8 @@ const platformHosts = new Set([
   "quiver.app",
   "www.quiver.app",
   "sites.quiver.app",
+  "quiver.diy",
+  "www.quiver.diy",
 ]);
 
 export function middleware(req: NextRequest) {

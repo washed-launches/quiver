@@ -9,6 +9,7 @@
     "build": "pnpm --filter @quiver/sdk build && pnpm --filter @quiver/api build && pnpm --filter @quiver/web build",
     "test:contracts": "forge test --root contracts -vv",
     "whitepaper": "pdflatex -interaction=nonstopmode -output-directory whitepaper whitepaper/main.tex && pdflatex -interaction=nonstopmode -output-directory whitepaper whitepaper/main.tex && Copy-Item whitepaper/main.pdf apps/web/public/quiver.pdf -Force",
-    "start:railway": "node scripts/start-railway.mjs"
+    "start:railway": "node scripts/start-railway.mjs",
+    "deploy:robinhood": "node scripts/deploy-robinhood.mjs"
   }
 }

@@ -8,15 +8,20 @@ import {QuiverBuyback} from "../src/QuiverBuyback.sol";
 import {SiteRegistry} from "../src/SiteRegistry.sol";
 import {QuiverFactory} from "../src/QuiverFactory.sol";
 
+/// @notice Deploys the QUIVER stack to Robinhood Chain mainnet (4663).
 contract Deploy is Script {
     address constant PONS_FACTORY = 0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e;
+    uint256 constant ROBINHOOD_MAINNET = 4663;
 
     function run() external {
-        address deployer = vm.envOr("DEPLOYER", msg.sender);
+        require(block.chainid == ROBINHOOD_MAINNET, "not robinhood mainnet");
+
+        uint256 pk = vm.envUint("PRIVATE_KEY");
+        address deployer = vm.addr(pk);
         address ponsFactory = vm.envOr("PONS_FACTORY", PONS_FACTORY);
         address quiverToken = vm.envOr("QUIVER_TOKEN", address(0));
 
-        vm.startBroadcast();
+        vm.startBroadcast(pk);
 
         QuiverTreasury treasury = new QuiverTreasury(deployer);
         QuiverBuyback buyback = new QuiverBuyback(deployer, ponsFactory);
@@ -36,10 +41,24 @@ contract Deploy is Script {
 
         vm.stopBroadcast();
 
+        console2.log("chainId", block.chainid);
+        console2.log("deployer", deployer);
         console2.log("Treasury", address(treasury));
         console2.log("Buyback", address(buyback));
         console2.log("Subscription", address(subscription));
         console2.log("Registry", address(registry));
         console2.log("Factory", address(factory));
+
+        string memory obj = "deploy";
+        vm.serializeUint(obj, "chainId", block.chainid);
+        vm.serializeAddress(obj, "deployer", deployer);
+        vm.serializeAddress(obj, "ponsFactory", ponsFactory);
+        vm.serializeAddress(obj, "quiverToken", quiverToken);
+        vm.serializeAddress(obj, "treasury", address(treasury));
+        vm.serializeAddress(obj, "buyback", address(buyback));
+        vm.serializeAddress(obj, "subscription", address(subscription));
+        vm.serializeAddress(obj, "registry", address(registry));
+        string memory json = vm.serializeAddress(obj, "factory", address(factory));
+        vm.writeJson(json, "deployments/robinhood.json");
     }
 }

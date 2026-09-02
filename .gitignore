@@ -8,6 +8,9 @@ broadcast
 .vscode
 .env
 .env.local
+.env.production.local
+*.pem
+*.key
 *.db
 *.db-journal
 apps/api/data/*

@@ -7,6 +7,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { apiUrl } from "@/lib/addresses";
 import type { SiteRecord } from "@/lib/api";
+import { contractsLive } from "@/lib/site";
 import { WalletButton } from "./wallet-button";
 import { wagmiConfig } from "@/lib/wagmi";
 
@@ -84,13 +85,18 @@ export function TradePanel({ site }: { site: SiteRecord }) {
   return (
     <section className="frame p-6">
       <div className="flex gap-2">
-        <button className={side === "buy" ? "btn-primary" : "btn-secondary"} onClick={() => setSide("buy")}>
+        <button className={`${side === "buy" ? "btn-primary" : "btn-secondary"} flex-1`} onClick={() => setSide("buy")}>
           Buy
         </button>
-        <button className={side === "sell" ? "btn-primary" : "btn-secondary"} onClick={() => setSide("sell")}>
+        <button className={`${side === "sell" ? "btn-primary" : "btn-secondary"} flex-1`} onClick={() => setSide("sell")}>
           Sell
         </button>
       </div>
+      {!contractsLive() && (
+        <p className="mb-4 text-sm leading-6 text-bark">
+          Preview. This button won’t hit a real curve. Make your own site if you want to trade for real.
+        </p>
+      )}
       <p className="mt-4 font-ui text-[11px] uppercase tracking-[0.14em] text-mist">
         Protocol fee {fee === undefined ? "0 bps" : `${fee} bps`}
       </p>

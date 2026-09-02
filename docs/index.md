@@ -10,6 +10,6 @@ $QUIVER, the token we use for buybacks, is on [PONS](/docs/pons). Different thin
 
 1. Connect a Robinhood Chain wallet and pay the month or the year.
 2. Name, ticker, slug.
-3. Deploy. It’s live at `/s/your-slug`. You can hang a domain on it later.
+3. Deploy. The page is `quiver.diy/your-slug`. You can hang your own domain on it later.
 
 [Creator guide](/docs/creator-guide) if you want the boring details.

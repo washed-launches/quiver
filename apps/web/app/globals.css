@@ -17,6 +17,7 @@ html,
 body {
   background: var(--paper);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 body {
@@ -39,7 +40,7 @@ body {
 }
 
 .btn {
-  @apply inline-flex items-center justify-center px-4 py-2.5 text-[13px] tracking-[0.04em] transition-colors;
+  @apply inline-flex min-h-11 items-center justify-center px-4 py-2.5 text-[13px] tracking-[0.04em] transition-colors;
   font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -67,7 +68,7 @@ body {
 
 input,
 textarea {
-  @apply w-full bg-paper border border-[var(--rule)] px-3 py-2.5 text-[15px] outline-none;
+  @apply w-full bg-paper border border-[var(--rule)] px-3 py-2.5 text-base outline-none;
   font-family: var(--font-body), Georgia, serif;
 }
 
@@ -77,7 +78,7 @@ textarea:focus {
 }
 
 .docs-prose h1 {
-  @apply font-display text-3xl text-forest mb-4;
+  @apply font-display text-[28px] sm:text-3xl text-forest mb-4;
 }
 .docs-prose h2 {
   @apply font-display text-xl text-forest mt-10 mb-3;
@@ -105,8 +106,13 @@ textarea:focus {
 .docs-prose pre code {
   @apply bg-transparent text-paper p-0;
 }
+.docs-prose {
+  overflow-wrap: anywhere;
+}
 .docs-prose table {
-  @apply w-full text-sm mb-6;
+  @apply mb-6 w-full text-sm;
+  display: block;
+  overflow-x: auto;
 }
 .docs-prose th,
 .docs-prose td {

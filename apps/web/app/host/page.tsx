@@ -12,11 +12,14 @@ export default async function HostPage() {
   if (!site) notFound();
 
   return (
-    <div className="mx-auto max-w-page px-5 py-14">
-      <p className="eyebrow">{host}</p>
-      <h1 className="mt-3 font-display text-5xl text-forest">{site.name}</h1>
+    <div className="mx-auto max-w-page px-4 py-10 sm:px-5 sm:py-14">
+      <p className="eyebrow break-all">{host}</p>
+      <h1 className="mt-3 break-words font-display text-4xl text-forest sm:text-5xl">{site.name}</h1>
       <p className="mt-2 font-ui text-sm text-mist">${site.symbol}</p>
       <p className="mt-4 max-w-xl text-lg text-ink/75">{site.description}</p>
+      <p className="mt-4 max-w-xl text-sm text-bark">
+        Preview page. Not a live market. Create your own if you want a real curve.
+      </p>
       <div className="mt-10 max-w-md">
         <TradePanel site={site} />
       </div>

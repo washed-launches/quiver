@@ -19,7 +19,7 @@ The dashboard stores description, links, and theme off-chain. On-chain state is 
 2. Enter the hostname in the dashboard and click **Verify CNAME**.
 3. Once DNS matches, QUIVER serves your white-label market on that host.
 
-Wildcard TLS and a full CDN control plane are not part of v1. Path `/s/slug` always works.
+Wildcard TLS and a full CDN control plane are not part of v1. `quiver.diy/yourname` always works.
 
 ## Trading
 

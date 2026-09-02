@@ -16,10 +16,11 @@ Addresses are filled after deploy via `NEXT_PUBLIC_*` env vars. Until then the U
 
 PONS factory (external): `0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e`
 
-Deploy (testnet first):
+Deploy on Robinhood **mainnet** (4663). Put the key in the environment — don’t paste it into chat.
 
 ```
-cd contracts
-forge script script/Deploy.s.sol:Deploy --rpc-url $RH_TESTNET_RPC_URL --broadcast
-forge verify-contract <addr> src/QuiverFactory.sol:QuiverFactory --verifier blockscout --verifier-url https://explorer.testnet.chain.robinhood.com/api --chain-id 46630
+$env:PRIVATE_KEY="0x..."
+node scripts/deploy-robinhood.mjs
 ```
+
+That writes `contracts/deployments/robinhood.json` and the `NEXT_PUBLIC_*` addresses. People then subscribe and deploy their own curves from their wallets. You only need the deployer once.

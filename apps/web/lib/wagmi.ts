@@ -3,7 +3,7 @@ import { createConfig, http, injected } from "wagmi";
 import { ROBINHOOD_CHAIN_ID } from "@quiver/sdk";
 
 export const robinhoodChain = defineChain({
-  id: Number(process.env.NEXT_PUBLIC_RH_CHAIN_ID ?? ROBINHOOD_CHAIN_ID),
+  id: ROBINHOOD_CHAIN_ID,
   name: "Robinhood Chain",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {

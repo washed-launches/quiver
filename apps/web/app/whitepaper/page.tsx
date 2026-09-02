@@ -1,6 +1,6 @@
 export default function WhitepaperPage() {
   return (
-    <div className="mx-auto max-w-page px-5 py-14">
+    <div className="mx-auto max-w-page px-4 py-10 sm:px-5 sm:py-14">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">LaTeX</p>

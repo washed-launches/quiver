@@ -8,6 +8,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { addresses, isDeployed } from "@/lib/addresses";
 import { saveSite } from "@/lib/api";
+import { publicUrl, reservedSlugs } from "@/lib/site";
 import { WalletButton } from "@/components/wallet-button";
 import { wagmiConfig } from "@/lib/wagmi";
 
@@ -37,7 +38,7 @@ export default function LaunchPage() {
   async function subscribe() {
     setError("");
     if (!isDeployed(addresses.subscription)) {
-      setError("Contracts are not deployed here yet. You can still preview the flow.");
+      setError("Preview only — the factory isn’t on-chain yet. You can still walk through making a page.");
       setStep(2);
       return;
     }
@@ -61,6 +62,10 @@ export default function LaunchPage() {
     setError("");
     try {
       const clean = normalizeSlug(slug);
+      if (reservedSlugs.has(clean)) {
+        setError("That name is reserved. Pick something else.");
+        return;
+      }
       if (!isDeployed(addresses.factory) || !address) {
         await saveSite({
           slug: clean,
@@ -71,7 +76,7 @@ export default function LaunchPage() {
           symbol: symbol.toUpperCase(),
           description,
         });
-        router.push(`/s/${clean}`);
+        router.push(`/${clean}`);
         return;
       }
       const hash = await writeContractAsync({
@@ -103,17 +108,17 @@ export default function LaunchPage() {
         symbol: symbol.toUpperCase(),
         description,
       });
-      router.push(`/s/${clean}`);
+      router.push(`/${clean}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Deploy failed");
     }
   }
 
   return (
-    <div className="mx-auto max-w-[640px] px-5 py-16">
+    <div className="mx-auto max-w-[640px] px-4 py-10 sm:px-5 sm:py-16">
       <p className="eyebrow">About five minutes</p>
-      <h1 className="mt-3 font-display text-4xl text-forest">Put a curve on a page</h1>
-      <ol className="mt-8 flex gap-6 border-b border-rule pb-4">
+      <h1 className="mt-3 font-display text-[32px] leading-tight text-forest sm:text-4xl">Put a curve on a page</h1>
+      <ol className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-b border-rule pb-4">
         {STEPS.map((label, i) => {
           const n = i + 1;
           return (
@@ -157,7 +162,7 @@ export default function LaunchPage() {
             ))}
           </div>
           {active && <p className="mt-4 text-sm text-moss">Subscription already active.</p>}
-          <button className="btn-primary mt-8" onClick={active ? () => setStep(2) : subscribe} disabled={isPending}>
+          <button className="btn-primary mt-8 w-full sm:w-auto" onClick={active ? () => setStep(2) : subscribe} disabled={isPending}>
             {active ? "Continue" : isPending ? "Confirm in wallet" : "Subscribe"}
           </button>
         </div>
@@ -182,7 +187,7 @@ export default function LaunchPage() {
             <span className="label">About</span>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} />
           </label>
-          <button className="btn-primary" onClick={() => setStep(3)} disabled={!name || !symbol || !slug}>
+          <button className="btn-primary w-full sm:w-auto" onClick={() => setStep(3)} disabled={!name || !symbol || !slug}>
             Next
           </button>
         </div>
@@ -192,10 +197,11 @@ export default function LaunchPage() {
         <div className="mt-10">
           <h2 className="font-display text-2xl text-forest">Go live</h2>
           <p className="mt-3 text-lg text-ink/75">
-            {name} (${symbol.toUpperCase()}) will be at /s/{slug.toLowerCase()}. Buy and sell sit on that
-            page. We don’t take a cut.
+            {name} (${symbol.toUpperCase()}) will show up at {publicUrl(slug)}. Right now that’s a preview
+            page — not a live market. Make your own if you want one. Don’t treat other people’s slugs as
+            real.
           </p>
-          <button className="btn-primary mt-8" onClick={deploy} disabled={isPending}>
+          <button className="btn-primary mt-8 w-full sm:w-auto" onClick={deploy} disabled={isPending}>
             {isPending ? "Deploying…" : "Deploy"}
           </button>
         </div>

@@ -11,7 +11,7 @@ export function WalletButton() {
 
   if (!isConnected) {
     return (
-      <button className="btn-primary" onClick={() => connect({ connector: connectors[0] })} disabled={isPending}>
+      <button className="btn-primary whitespace-nowrap" onClick={() => connect({ connector: connectors[0] })} disabled={isPending}>
         {isPending ? "Opening…" : "Connect"}
       </button>
     );
@@ -19,14 +19,14 @@ export function WalletButton() {
 
   if (chainId !== robinhoodChain.id) {
     return (
-      <button className="btn-primary" onClick={() => switchChain({ chainId: robinhoodChain.id })}>
+      <button className="btn-primary whitespace-nowrap px-3" onClick={() => switchChain({ chainId: robinhoodChain.id })}>
         Switch network
       </button>
     );
   }
 
   return (
-    <button className="btn-secondary" onClick={() => disconnect()}>
+    <button className="btn-secondary whitespace-nowrap px-3" onClick={() => disconnect()}>
       {address?.slice(0, 6)}…{address?.slice(-4)}
     </button>
   );
