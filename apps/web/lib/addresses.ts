@@ -9,7 +9,10 @@ export const addresses = {
   quiverToken: (process.env.NEXT_PUBLIC_QUIVER_TOKEN ?? ZERO) as `0x${string}`,
 };
 
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4001";
+export const apiUrl =
+  typeof window === "undefined"
+    ? (process.env.API_UPSTREAM ?? "http://127.0.0.1:4001")
+    : (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4001");
 export const explorer = process.env.NEXT_PUBLIC_RH_EXPLORER ?? "https://robinhoodchain.blockscout.com";
 export const ponsApp = process.env.NEXT_PUBLIC_PONS_APP ?? "https://pons.family";
 

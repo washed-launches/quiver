@@ -14,7 +14,13 @@ export function middleware(req: NextRequest) {
     .split(":")[0]
     .toLowerCase();
 
-  if (!host || platformHosts.has(host) || host.endsWith(".localhost")) {
+  if (
+    !host
+    || platformHosts.has(host)
+    || host.endsWith(".localhost")
+    || host.endsWith(".up.railway.app")
+    || host.endsWith(".railway.app")
+  ) {
     return NextResponse.next();
   }
 
